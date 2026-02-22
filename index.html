@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OzzieTrip – Discover Australia</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+<style>
+:root {
+  --ochre: #C4762A;
+  --sand:  #F5E6C8;
+  --rust:  #9E3B1E;
+  --deep:  #1A2B3C;
+  --cream: #FDF8EE;
+  --green: #3A6B4A;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--deep); overflow-x: hidden; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+img { max-width: 100%; }
+a { text-decoration: none; }
+
+/* ─── NAVBAR ─── */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(26,43,60,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(196,118,42,0.3);
+  padding: 0.9rem 0;
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nav-brand { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--ochre); cursor: pointer; }
+.nav-brand span { color: #fff; }
+.nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+.nav-links li a, .nav-links li button {
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.8); font-size: 0.88rem; font-weight: 500;
+  padding: 0.4rem 0.85rem; border-radius: 2px; transition: color 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.nav-links li a:hover, .nav-links li button:hover { color: var(--ochre); }
+.nav-links .btn-nav-cta { background: var(--ochre); color: #fff !important; }
+.nav-links .btn-nav-cta:hover { background: var(--rust); color: #fff !important; }
+.nav-toggle { display: none; background: none; border: 1.5px solid rgba(255,255,255,0.4); color: #fff; padding: 0.35rem 0.6rem; border-radius: 4px; cursor: pointer; font-size: 1.1rem; }
+@media(max-width:768px){
+  .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(26,43,60,0.98); padding: 1rem; gap: 0.2rem; }
+  .nav-links.open { display: flex; }
+  .nav-toggle { display: block; }
+}
+
+/* ─── HERO CAROUSEL ─── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  padding-top: 80px; overflow: hidden;
+}
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity 1.2s ease;
+}
+.hero-slide.active { opacity: 1; }
+.hero-slide::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(26,43,60,0.65) 0%, rgba(26,43,60,0.2) 50%, rgba(26,43,60,0.75) 100%);
+}
+.slide-1 { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1900&q=85'); }
+.slide-2 { background-image: url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=1900&q=85'); }
+.slide-3 { background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1900&q=85'); }
+.slide-4 { background-image: url('https://images.unsplash.com/photo-1568572933382-74d440642117?w=1900&q=85'); }
+.slide-5 { background-image: url('https://images.unsplash.com/photo-1474321381769-bb61b80c7a5f?w=1900&q=85'); }
+.hero-bottom-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to top, var(--cream), transparent); z-index: 3; pointer-events: none; }
+.hero-content { position: relative; z-index: 5; }
+/* arrows */
+.hero-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+  width: 50px; height: 50px; border-radius: 50%; cursor: pointer;
+  background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.35);
+  color: #fff; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; backdrop-filter: blur(6px);
+}
+.hero-arrow:hover { background: var(--ochre); border-color: var(--ochre); transform: translateY(-50%) scale(1.08); }
+.hero-prev { left: 1.5rem; }
+.hero-next { right: 1.5rem; }
+/* dots */
+.hero-dots {
+  position: absolute; bottom: 130px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 10; align-items: center;
+}
+.hero-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.4); cursor: pointer;
+  border: none; padding: 0; transition: all 0.35s;
+}
+.hero-dot.active { background: var(--ochre); width: 28px; border-radius: 4px; }
+/* counter */
+.hero-counter {
+  position: absolute; bottom: 148px; right: 1.8rem; z-index: 10;
+  color: rgba(255,255,255,0.55); font-size: 0.7rem; letter-spacing: 2px;
+}
+/* scroll hint */
+.scroll-hint {
+  position: absolute; bottom: 106px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,0.5); font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 10;
+}
+.scroll-hint::after { content:''; width:1px; height:32px; background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent); animation: lineAnim 1.5s ease-in-out infinite; }
+@keyframes lineAnim { 0%,100%{opacity:1} 50%{opacity:0.3} }
+/* hero floating cards */
+.hero-float-cards {
+  position: absolute; right: 5%; bottom: 14%; display: flex; gap: 12px;
+  z-index: 6; animation: fadeUp 1s 0.7s ease both;
+}
+.hfc { width: 130px; border-radius: 6px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.15); transition: transform 0.3s; }
+.hfc:hover { transform: translateY(-8px); }
+.hfc img { width: 100%; height: 100px; object-fit: cover; display: block; }
+.hfc-label { background: rgba(26,43,60,0.92); color: #fff; font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 8px; text-align: center; }
+.hfc:nth-child(2) { margin-top: 24px; }
+.hfc:nth-child(3) { margin-top: 12px; }
+/* hero text */
+.hero-badge { display: inline-block; background: rgba(196,118,42,0.2); border: 1px solid var(--ochre); color: var(--sand); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 2px; margin-bottom: 1.5rem; }
+.hero h1 { font-size: clamp(2.6rem, 6.5vw, 5.2rem); font-weight: 900; color: #fff; line-height: 1.05; }
+.hero h1 em { font-style: italic; color: var(--ochre); }
+.hero-sub { color: rgba(255,255,255,0.82); font-size: 1.05rem; max-width: 540px; line-height: 1.75; margin-top: 1.2rem; }
+.hero-btns { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─── BUTTONS ─── */
+.btn-oz { display: inline-block; background: var(--ochre); color: #fff; border: none; padding: 0.82rem 2rem; font-weight: 600; font-size: 0.93rem; border-radius: 2px; cursor: pointer; transition: all 0.22s; font-family: 'DM Sans', sans-serif; }
+.btn-oz:hover { background: var(--rust); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(158,59,30,0.3); }
+.btn-oz-outline { display: inline-block; background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.55); padding: 0.82rem 2rem; font-weight: 600; font-size: 0.93rem; border-radius: 2px; cursor: pointer; transition: all 0.22s; font-family: 'DM Sans', sans-serif; }
+.btn-oz-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); color: #fff; }
+.btn-dark { display: inline-block; background: var(--deep); color: #fff; border: none; padding: 0.55rem 1.2rem; font-weight: 600; font-size: 0.82rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.btn-dark:hover { background: var(--ochre); color: #fff; }
+
+/* ─── STATS BAR ─── */
+.stats-bar { background: var(--deep); padding: 1.5rem 0; }
+.stat-box { text-align: center; padding: 0.5rem 1rem; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--ochre); line-height: 1; }
+.stat-lbl { font-size: 0.76rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+
+/* ─── COMMON SECTION ─── */
+.section { padding: 5.5rem 0; }
+.section-dark { background: var(--deep); }
+.section-sand { background: var(--sand); }
+.section-light { background: #f7efe0; }
+.section-white { background: #fff; }
+.lbl { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--ochre); font-weight: 700; margin-bottom: 0.6rem; display: block; }
+.lbl-light { color: rgba(255,255,255,0.55); }
+.sec-title { font-size: clamp(1.9rem, 3.8vw, 2.9rem); font-weight: 700; line-height: 1.15; color: var(--deep); }
+.sec-title em { font-style: italic; color: var(--ochre); }
+.sec-title-light { color: #fff; }
+.bar { width: 46px; height: 3px; background: var(--ochre); margin: 1.3rem 0; }
+.bar-center { margin: 1.3rem auto; }
+
+/* ─── WHY CARDS ─── */
+.why-card { background: #fff; border: 1px solid rgba(196,118,42,0.14); border-radius: 4px; padding: 1.8rem; height: 100%; position: relative; overflow: hidden; transition: all 0.3s; }
+.why-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--ochre); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.why-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(26,43,60,0.11); }
+.why-card:hover::before { transform: scaleX(1); }
+.why-icon { width: 50px; height: 50px; background: var(--sand); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; margin-bottom: 1.1rem; }
+.why-card h5 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+.why-card p { font-size: 0.87rem; color: #666; line-height: 1.7; margin: 0; }
+
+/* ─── IMG MOSAIC ─── */
+.img-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 195px 195px; gap: 8px; border-radius: 6px; overflow: hidden; }
+.img-mosaic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-mosaic .span-2 { grid-row: 1 / 3; }
+
+/* ─── DESTINATIONS GRID ─── */
+.dest-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 260px 260px; gap: 8px; }
+.dest-card { position: relative; overflow: hidden; border-radius: 4px; cursor: pointer; }
+.dest-card:first-child { grid-row: 1 / 3; }
+.dest-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.55s; }
+.dest-card:hover img { transform: scale(1.08); }
+.dest-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,43,60,0.88) 0%, transparent 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.1rem; }
+.dest-name { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+.dest-sub { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+.dest-badge { position: absolute; top: 0.7rem; right: 0.7rem; background: var(--ochre); color: #fff; font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 0.22rem 0.55rem; border-radius: 2px; font-weight: 700; }
+
+/* ─── GALLERY STRIP ─── */
+.gallery-strip { display: flex; overflow: hidden; }
+.gallery-strip img { flex: 1; height: 260px; object-fit: cover; display: block; filter: brightness(0.85) saturate(1.1); transition: all 0.4s; cursor: pointer; }
+.gallery-strip img:hover { flex: 2.4; filter: brightness(1) saturate(1.25); }
+
+/* ─── TOUR CARDS ─── */
+.tour-card { background: #fff; border: 1px solid rgba(196,118,42,0.12); border-radius: 6px; overflow: hidden; height: 100%; transition: all 0.3s; box-shadow: 0 2px 12px rgba(26,43,60,0.05); }
+.tour-card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px rgba(26,43,60,0.13); }
+.tour-img { position: relative; overflow: hidden; }
+.tour-img img { width: 100%; height: 225px; object-fit: cover; display: block; transition: transform 0.5s; }
+.tour-card:hover .tour-img img { transform: scale(1.07); }
+.tour-tag { position: absolute; top: 0.9rem; left: 0.9rem; background: var(--ochre); color: #fff; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.28rem 0.65rem; border-radius: 2px; font-weight: 700; }
+.tour-stars { position: absolute; top: 0.9rem; right: 0.9rem; background: rgba(26,43,60,0.85); color: #fff; font-size: 0.72rem; padding: 0.28rem 0.6rem; border-radius: 2px; display: flex; align-items: center; gap: 3px; }
+.tour-body { padding: 1.4rem; }
+.tour-body h5 { font-size: 1.1rem; margin-bottom: 0.45rem; color: var(--deep); }
+.tour-body p { font-size: 0.86rem; color: #666; line-height: 1.6; margin-bottom: 0.9rem; }
+.tour-meta { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.tour-meta span { font-size: 0.76rem; color: #888; }
+.tour-meta i { color: var(--ochre); margin-right: 3px; }
+.tour-price { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--ochre); font-weight: 700; }
+.tour-price small { font-family: 'DM Sans', sans-serif; font-size: 0.7rem; color: #aaa; font-weight: 400; }
+
+/* ─── EXPERIENCE COLLAGE ─── */
+.exp-collage { position: relative; height: 490px; }
+.exp-collage img { position: absolute; border-radius: 4px; object-fit: cover; box-shadow: 0 12px 30px rgba(0,0,0,0.3); border: 3px solid rgba(255,255,255,0.08); }
+.exp-main { width: 60%; height: 80%; top: 10%; left: 0; z-index: 2; }
+.exp-tr { width: 38%; height: 46%; top: 0; right: 0; z-index: 3; }
+.exp-br { width: 38%; height: 46%; bottom: 0; right: 0; z-index: 3; }
+.exp-badge { position: absolute; bottom: 20%; left: 44%; transform: translateX(-50%); background: var(--ochre); color: #fff; border-radius: 4px; padding: 0.9rem 1.3rem; text-align: center; z-index: 10; box-shadow: 0 8px 24px rgba(196,118,42,0.45); }
+.exp-badge .big { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; line-height: 1; }
+.exp-badge .sml { font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; opacity: 0.88; }
+.exp-feat { display: flex; align-items: flex-start; gap: 0.9rem; margin-bottom: 1.4rem; }
+.exp-icon { width: 42px; height: 42px; background: rgba(196,118,42,0.18); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; }
+.exp-feat h6 { color: #fff; font-weight: 700; margin: 0 0 2px; font-size: 0.92rem; }
+.exp-feat p { font-size: 0.82rem; color: rgba(255,255,255,0.58); margin: 0; line-height: 1.6; }
+
+/* ─── TESTIMONIALS ─── */
+.testi-card { background: #fff; border: 1px solid rgba(196,118,42,0.12); border-radius: 4px; padding: 1.8rem; height: 100%; box-shadow: 0 4px 18px rgba(26,43,60,0.05); }
+.testi-stars { color: #f5b942; letter-spacing: 2px; margin-bottom: 0.7rem; font-size: 0.9rem; }
+.testi-text { font-size: 0.89rem; color: #555; font-style: italic; line-height: 1.75; margin-bottom: 1.1rem; }
+.testi-author { display: flex; align-items: center; gap: 11px; }
+.testi-avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid var(--sand); }
+.testi-name { font-weight: 700; font-size: 0.86rem; color: var(--deep); line-height: 1; }
+.testi-from { font-size: 0.72rem; color: #aaa; margin-top: 2px; }
+
+/* ─── PLANNER ─── */
+.planner-hero { height: 300px; display: flex; align-items: center; background: linear-gradient(to right, rgba(26,43,60,0.88), rgba(26,43,60,0.4)), url('https://images.unsplash.com/photo-1474321381769-bb61b80c7a5f?w=1600&q=80') center/cover; }
+.plan-box { background: #fff; border-radius: 4px; padding: 2.2rem; box-shadow: 0 12px 40px rgba(26,43,60,0.09); border: 1px solid rgba(196,118,42,0.14); }
+.plan-box label { font-weight: 600; font-size: 0.82rem; color: var(--deep); margin-bottom: 4px; display: block; }
+.form-control, .form-select { border: 1.5px solid #e8dcc8; border-radius: 2px; font-size: 0.87rem; padding: 0.58rem 0.85rem; width: 100%; outline: none; font-family: 'DM Sans', sans-serif; }
+.form-control:focus, .form-select:focus { border-color: var(--ochre); box-shadow: 0 0 0 3px rgba(196,118,42,0.1); }
+textarea.form-control { resize: vertical; }
+.step-row { display: flex; align-items: center; gap: 1rem; }
+.step-num { width: 42px; height: 42px; background: var(--ochre); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+.plan-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 2rem; }
+.plan-img-grid img { width: 100%; height: 145px; object-fit: cover; border-radius: 4px; display: block; }
+
+/* ─── TOUR DETAIL ─── */
+.detail-hero-banner {
+  height: 420px; border-radius: 6px; margin-bottom: 1.8rem; display: flex; align-items: flex-end; padding: 2.2rem;
+  background: linear-gradient(to bottom, rgba(26,43,60,0.3), rgba(26,43,60,0.75)), url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=1400&q=80') center/cover;
+}
+.detail-hero-banner h2 { color: #fff; font-size: 2.1rem; margin: 0; }
+.detail-hero-banner p { color: rgba(255,255,255,0.78); margin: 0.3rem 0 0; }
+.photo-grid { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 155px 155px; gap: 6px; border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
+.photo-grid img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; transition: filter 0.3s; }
+.photo-grid img:hover { filter: brightness(1.1); }
+.photo-grid img:first-child { grid-row: 1 / 3; }
+.info-card { background: #fff; border: 1px solid rgba(196,118,42,0.13); border-radius: 4px; padding: 1.4rem; margin-bottom: 1.4rem; }
+.info-card h6 { font-size: 0.98rem; font-weight: 700; color: var(--deep); margin-bottom: 0.9rem; }
+.info-card ul { list-style: none; padding: 0; margin: 0; }
+.info-card ul li { font-size: 0.86rem; color: #555; padding: 0.32rem 0; border-bottom: 1px solid #f0e8d8; display: flex; align-items: flex-start; gap: 8px; }
+.info-card ul li:last-child { border-bottom: none; }
+.info-card ul li i { color: var(--ochre); margin-top: 2px; flex-shrink: 0; }
+.itin-day { background: #fff; border-left: 3px solid var(--ochre); padding: 0.9rem 1.3rem; margin-bottom: 0.7rem; border-radius: 0 4px 4px 0; display: grid; grid-template-columns: 68px 1fr; gap: 1rem; align-items: start; }
+.itin-day img { width: 68px; height: 53px; object-fit: cover; border-radius: 3px; display: block; }
+.itin-day h6 { font-weight: 700; font-size: 0.87rem; color: var(--deep); margin: 0 0 3px; }
+.itin-day p { font-size: 0.82rem; color: #666; margin: 0; }
+.price-box { background: var(--deep); color: #fff; border-radius: 4px; padding: 1.8rem; text-align: center; position: sticky; top: 90px; }
+.price-box .amount { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--ochre); line-height: 1; }
+.price-box .per { font-size: 0.76rem; color: rgba(255,255,255,0.42); margin-bottom: 1.3rem; }
+.btn-book { display: block; background: var(--ochre); color: #fff; border: none; font-weight: 700; padding: 0.88rem; border-radius: 2px; margin-bottom: 0.7rem; width: 100%; font-size: 0.97rem; cursor: pointer; transition: background 0.2s; font-family: 'DM Sans', sans-serif; }
+.btn-book:hover { background: var(--rust); }
+.btn-enquire { display: block; background: transparent; color: rgba(255,255,255,0.68); border: 1.5px solid rgba(255,255,255,0.2); font-weight: 600; padding: 0.88rem; border-radius: 2px; width: 100%; font-size: 0.9rem; cursor: pointer; transition: border-color 0.2s; font-family: 'DM Sans', sans-serif; }
+.btn-enquire:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+.thumb-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; border-radius: 4px; overflow: hidden; margin-top: 0.8rem; }
+.thumb-strip img { width: 100%; height: 64px; object-fit: cover; display: block; }
+.detail-meta { display: flex; gap: 1.8rem; flex-wrap: wrap; padding-bottom: 1.1rem; margin-bottom: 1.1rem; border-bottom: 1px solid #f0e8d8; }
+.detail-meta-item div:first-child { font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+.detail-meta-item strong { font-size: 0.92rem; color: var(--deep); }
+
+/* ─── NEWSLETTER ─── */
+.newsletter { background: var(--rust); padding: 4.5rem 0; position: relative; overflow: hidden; }
+.newsletter::before { content:''; position:absolute; top:-50%; right:-10%; width:480px; height:480px; background:rgba(255,255,255,0.04); border-radius:50%; }
+.newsletter h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2.1rem; }
+.newsletter p { color: rgba(255,255,255,0.78); margin-top: 0.5rem; }
+.nl-form { display: flex; max-width: 460px; }
+.nl-form input { flex: 1; border: none; padding: 0.82rem 1.1rem; font-size: 0.9rem; border-radius: 2px 0 0 2px; background: rgba(255,255,255,0.14); color: #fff; outline: none; font-family: 'DM Sans', sans-serif; }
+.nl-form input::placeholder { color: rgba(255,255,255,0.48); }
+.nl-form button { background: var(--deep); color: #fff; border: none; padding: 0.82rem 1.4rem; font-weight: 700; font-size: 0.86rem; border-radius: 0 2px 2px 0; cursor: pointer; white-space: nowrap; transition: background 0.2s; font-family: 'DM Sans', sans-serif; }
+.nl-form button:hover { background: #0d1a27; }
+
+/* ─── FOOTER ─── */
+footer { background: #0d1a27; color: rgba(255,255,255,0.5); padding: 2.8rem 0 1.5rem; }
+footer .brand { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--ochre); margin-bottom: 0.5rem; }
+footer p { font-size: 0.82rem; line-height: 1.7; }
+footer h6 { color: rgba(255,255,255,0.88); font-weight: 700; margin-bottom: 0.9rem; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+footer ul { list-style: none; padding: 0; margin: 0; }
+footer ul li { margin-bottom: 0.45rem; }
+footer ul li a { color: rgba(255,255,255,0.45); font-size: 0.82rem; transition: color 0.2s; }
+footer ul li a:hover { color: var(--ochre); }
+.socials { display: flex; gap: 0.7rem; margin-top: 1rem; }
+.socials a { width: 35px; height: 35px; background: rgba(255,255,255,0.08); border-radius: 2px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.55); font-size: 0.95rem; transition: all 0.2s; }
+.socials a:hover { background: var(--ochre); color: #fff; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); margin-top: 2rem; padding-top: 1.4rem; font-size: 0.76rem; text-align: center; }
+
+/* ─── PAGE SWITCHING ─── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─── FADE-UP ANIMATION ─── */
+.fu { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fu.vis { opacity: 1; transform: translateY(0); }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb { font-size: 0.82rem; background: none; padding: 0; margin-bottom: 1.2rem; }
+.breadcrumb-item a { color: var(--ochre); }
+.breadcrumb-item.active { color: #888; }
+.breadcrumb-item + .breadcrumb-item::before { color: #bbb; }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:991px){
+  .hero-float-cards { display: none; }
+  .dest-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 220px 220px; }
+  .dest-card:first-child { grid-row: auto; grid-column: 1 / 3; }
+  .exp-collage { height: 300px; }
+  .exp-badge { left: 42%; }
+}
+@media(max-width:576px){
+  .gallery-strip img { height: 150px; }
+  .detail-hero-banner { height: 240px; }
+  .detail-hero-banner h2 { font-size: 1.4rem; }
+  .itin-day { grid-template-columns: 1fr; }
+  .itin-day img { width: 100%; height: 100px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAVBAR ═══════ -->
+<nav class="site-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-brand" onclick="showPage('home')">Ozzie<span>Trip</span></div>
+      <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" onclick="showPage('home');closeNav()">Home</a></li>
+        <li><a href="#" onclick="gotoTours();closeNav()">Tours</a></li>
+        <li><a href="#" onclick="showPage('planner');closeNav()">Trip Planner</a></li>
+        <li><a href="#" onclick="showPage('detail');closeNav()">Tour Detail</a></li>
+        <li><button class="btn-nav-cta" onclick="showPage('detail');closeNav()">Book Now</button></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ HOME PAGE ═══════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <!-- Slide backgrounds -->
+    <div class="hero-slides">
+      <div class="hero-slide slide-1 active"></div>
+      <div class="hero-slide slide-2"></div>
+      <div class="hero-slide slide-3"></div>
+      <!-- <div class="hero-slide slide-4"></div>
+      <div class="hero-slide slide-5"></div> -->
+    </div>
+    <!-- Fade at bottom -->
+    <div class="hero-bottom-fade"></div>
+    <!-- Arrows -->
+    <button class="hero-arrow hero-prev" onclick="heroMove(-1)" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+    <button class="hero-arrow hero-next" onclick="heroMove(1)"  aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+    <!-- Dots -->
+    <div class="hero-dots" id="heroDots"></div>
+    <!-- Counter -->
+    <div class="hero-counter" id="heroCounter">01 / 05</div>
+    <!-- Scroll hint -->
+    <div class="scroll-hint">Scroll</div>
+    <!-- Floating destination cards -->
+    <div class="hero-float-cards">
+      <div class="hfc">
+        <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=300&q=80" alt="Sydney" />
+        <div class="hfc-label">Sydney</div>
+      </div>
+      <div class="hfc">
+        <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=300&q=80" alt="Gold Coast" />
+        <div class="hfc-label">Gold Coast</div>
+      </div>
+      <div class="hfc">
+        <img src="https://images.unsplash.com/photo-1545044846-351ba102b6d5?w=300&q=80" alt="Melbourne" />
+        <div class="hfc-label">Melbourne</div>
+      </div>
+    </div>
+    <!-- Text content -->
+    <div class="container hero-content">
+      <div class="row">
+        <div class="col-lg-7 col-xl-6">
+          <div class="hero-badge">🦘 Australia's Trusted Travel Partner</div>
+          <h1>Discover<br><em>Australia</em><br>Like Never Before</h1>
+          <p class="hero-sub">From iconic landmarks to hidden gems — we design unforgettable journeys for individuals, groups, and global event travelers.</p>
+          <div class="hero-btns">
+            <button class="btn-oz" onclick="gotoTours()">Explore Tours</button>
+            <button class="btn-oz-outline" onclick="showPage('planner')">Plan My Trip</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="row g-0">
+        <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">5,000+</div><div class="stat-lbl">Happy Travellers</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">50+</div><div class="stat-lbl">Curated Tours</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">12+</div><div class="stat-lbl">Years Experience</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">4.9 ★</div><div class="stat-lbl">Average Rating</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRO + WHY US -->
+  <section class="section">
+    <div class="container">
+      <div class="row align-items-center gy-5 mb-5">
+        <div class="col-lg-5 fu">
+          <span class="lbl">Welcome to OzzieTrip</span>
+          <h2 class="sec-title">Your trusted partner for <em>Australian</em> adventures</h2>
+          <div class="bar"></div>
+          <p style="color:#555;line-height:1.8;font-size:0.93rem;">Whether you're dreaming of a peaceful solo escape, a fun-filled group adventure, or an exciting event tour — we bring your journey to life with curated experiences, expert planning, and deep local insights.</p>
+          <button class="btn-oz mt-4" onclick="showPage('planner')">Start Planning</button>
+        </div>
+        <div class="col-lg-6 offset-lg-1 fu">
+          <div class="img-mosaic">
+            <img class="span-2" src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80" alt="Bondi Beach" />
+            <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&q=80" alt="Kangaroo" />
+            <img src="road.avif" alt="Great Ocean Road" />
+          </div>
+        </div>
+      </div>
+      <div class="row g-3 fu">
+        <div class="col-sm-6 col-lg-3"><div class="why-card"><div class="why-icon">✨</div><h5>Handcrafted Experiences</h5><p>Every itinerary is created with care, combining must-see attractions with authentic local moments.</p></div></div>
+        <div class="col-sm-6 col-lg-3"><div class="why-card"><div class="why-icon">👥</div><h5>Group, Solo & Events</h5><p>Choose your travel style — join a group, personalised trip, or Australia's biggest festivals.</p></div></div>
+        <div class="col-sm-6 col-lg-3"><div class="why-card"><div class="why-icon">🦘</div><h5>Authentic Australia</h5><p>From outback sunsets to coastal drives and wildlife encounters, explore the real Australia.</p></div></div>
+        <div class="col-sm-6 col-lg-3"><div class="why-card"><div class="why-icon">💬</div><h5>24/7 Support</h5><p>We're with you at every step — from planning to your journey back home.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTINATIONS -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="text-center mb-5 fu">
+        <span class="lbl lbl-light">Explore Destinations</span>
+        <h2 class="sec-title sec-title-light">Australia's most <em>iconic</em> places</h2>
+        <div class="bar bar-center"></div>
+      </div>
+      <div class="dest-grid fu">
+        <div class="dest-card">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80" alt="Sydney" />
+          <div class="dest-overlay"><div class="dest-name">Sydney</div><div class="dest-sub">Harbour · Opera House · Bondi</div></div>
+          <span class="dest-badge">Most Popular</span>
+        </div>
+        <div class="dest-card">
+          <img src="https://images.unsplash.com/photo-1545044846-351ba102b6d5?w=500&q=80" alt="Melbourne" />
+          <div class="dest-overlay"><div class="dest-name">Melbourne</div><div class="dest-sub">Laneways · Coffee · Culture</div></div>
+        </div>
+        <div class="dest-card">
+          <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=500&q=80" alt="Gold Coast" />
+          <div class="dest-overlay"><div class="dest-name">Gold Coast</div><div class="dest-sub">Theme Parks · Beaches · Surf</div></div>
+        </div>
+        <div class="dest-card">
+          <img src="red earth.avif" alt="Outback" />
+          <div class="dest-overlay"><div class="dest-name">The Outback</div><div class="dest-sub">Uluru · Red Earth · Stars</div></div>
+          <span class="dest-badge">Adventure</span>
+        </div>
+        <div class="dest-card">
+          <img src="beach road.avif" alt="Great Ocean Road" />
+          <div class="dest-overlay"><div class="dest-name">Great Ocean Road</div><div class="dest-sub">12 Apostles · Coastal Drive</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY STRIP -->
+  <div class="gallery-strip">
+    <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&q=80" alt="Kangaroo" />
+    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Bondi" />
+    <img src="https://images.unsplash.com/photo-1524293581917-878a6d017c71?w=400&q=80" alt="Harbour" />
+    <img src="https://images.unsplash.com/photo-1555993539-1732b0258235?w=400&q=80" alt="Reef" />
+    <img src="https://images.unsplash.com/photo-1474321381769-bb61b80c7a5f?w=400&q=80" alt="Ocean Road" />
+    <img src="https://images.unsplash.com/photo-1567501218671-e0c9e7d81c30?w=400&q=80" alt="Outback Sunset" />
+  </div>
+
+  <!-- TOURS -->
+  <section class="section section-light" id="tours">
+    <div class="container">
+      <div class="text-center mb-5 fu">
+        <span class="lbl">Featured Tours</span>
+        <h2 class="sec-title">Journeys that <em>inspire</em></h2>
+        <div class="bar bar-center"></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6 fu">
+          <div class="tour-card">
+            <div class="tour-img">
+              <img src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=700&q=80" alt="Classic Group Escape" />
+              <span class="tour-tag">Group Tour</span>
+              <span class="tour-stars"><i class="bi bi-star-fill" style="color:#f5b942"></i> 4.9</span>
+            </div>
+            <div class="tour-body">
+              <h5>Classic Australia Group Escape</h5>
+              <p>A 10-day journey covering Sydney, Gold Coast, Melbourne & the Great Ocean Road.</p>
+              <div class="tour-meta">
+                <span><i class="bi bi-calendar3"></i>10 Days</span>
+                <span><i class="bi bi-people"></i>Group</span>
+                <span><i class="bi bi-geo-alt"></i>4 Cities</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="tour-price">$2,499 <small>/ person</small></div>
+                <button class="btn-dark" onclick="showPage('detail')">View Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 fu">
+          <div class="tour-card">
+            <div class="tour-img">
+              <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=700&q=80" alt="Solo Escape" />
+              <span class="tour-tag">Solo Travel</span>
+              <span class="tour-stars"><i class="bi bi-star-fill" style="color:#f5b942"></i> 4.8</span>
+            </div>
+            <div class="tour-body">
+              <h5>Solo Traveller's Dream Escape</h5>
+              <p>Freedom, safety, and flexibility — perfect for first-time Australia visitors exploring on their own terms.</p>
+              <div class="tour-meta">
+                <span><i class="bi bi-calendar3"></i>7 Days</span>
+                <span><i class="bi bi-person"></i>Solo</span>
+                <span><i class="bi bi-geo-alt"></i>Flexible</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="tour-price">$1,799 <small>/ person</small></div>
+                <button class="btn-dark" onclick="showPage('detail')">View Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 fu">
+          <div class="tour-card">
+            <div class="tour-img">
+              <img src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?w=700&q=80" alt="Australian Open" />
+              <span class="tour-tag">Event Tour</span>
+              <span class="tour-stars"><i class="bi bi-star-fill" style="color:#f5b942"></i> 5.0</span>
+            </div>
+            <div class="tour-body">
+              <h5>Australian Open & Cricket Experience</h5>
+              <p>Watch world tennis champions live, paired with local city tours and exciting cricket experiences.</p>
+              <div class="tour-meta">
+                <span><i class="bi bi-calendar3"></i>5 Days</span>
+                <span><i class="bi bi-trophy"></i>Event</span>
+                <span><i class="bi bi-geo-alt"></i>Melbourne</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="tour-price">$3,199 <small>/ person</small></div>
+                <button class="btn-dark" onclick="showPage('detail')">View Tour</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-5 fu">
+        <button class="btn-oz">View All Tours &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE COLLAGE -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="row align-items-center gy-5">
+        <div class="col-lg-5 fu">
+          <span class="lbl lbl-light">The OzzieTrip Difference</span>
+          <h2 class="sec-title sec-title-light">Unforgettable moments <em>await</em></h2>
+          <div class="bar"></div>
+          <div class="exp-feat"><div class="exp-icon">🏄</div><div><h6>Coastal Adventures</h6><p>Surf Bondi, sail Sydney Harbour, and snorkel the Great Barrier Reef with expert guides.</p></div></div>
+          <div class="exp-feat"><div class="exp-icon">🦘</div><div><h6>Wildlife Encounters</h6><p>Get up close with kangaroos, koalas, and wombats at world-class sanctuaries.</p></div></div>
+          <div class="exp-feat"><div class="exp-icon">🌅</div><div><h6>Outback Sunsets</h6><p>Watch Uluru glow red at dusk — a spiritual experience unlike anything else on earth.</p></div></div>
+          <button class="btn-oz mt-2" onclick="showPage('planner')">Plan Your Adventure</button>
+        </div>
+        <div class="col-lg-6 offset-lg-1 fu">
+          <div class="exp-collage">
+            <img class="exp-main" src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=700&q=80" alt="Kangaroo" />
+            <img class="exp-tr" src="https://images.unsplash.com/photo-1524293581917-878a6d017c71?w=500&q=80" alt="Sydney Harbour" />
+            <img class="exp-br" src="beach road.avif" alt="Uluru" />
+            <div class="exp-badge"><div class="big">12+</div><div class="sml">Years of<br>Adventures</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-5 fu">
+        <span class="lbl">Traveller Stories</span>
+        <h2 class="sec-title">What our guests <em>say</em></h2>
+        <div class="bar bar-center"></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6 fu">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"The 10-day group tour was absolutely magical. From Bondi to the Great Ocean Road — every detail was perfect. I've already booked my second trip!"</p>
+            <div class="testi-author">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sarah M" class="testi-avatar" />
+              <div><div class="testi-name">Sarah Mitchell</div><div class="testi-from">🇬🇧 London, UK</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 fu">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Travelled solo for the first time and felt completely safe and looked after. The itinerary was flexible and local guides had incredible knowledge."</p>
+            <div class="testi-author">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James K" class="testi-avatar" />
+              <div><div class="testi-name">James Kowalski</div><div class="testi-from">🇺🇸 Chicago, USA</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 fu">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"The Australian Open tour was a dream come true. Front-row seats, amazing Melbourne city tour, and exceptional service throughout!"</p>
+            <div class="testi-author">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Priya S" class="testi-avatar" />
+              <div><div class="testi-name">Priya Sharma</div><div class="testi-from">🇮🇳 Mumbai, India</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div class="container">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-6">
+          <span class="lbl lbl-light">Travel Community</span>
+          <h2>Get early bird offers<br>&amp; event alerts</h2>
+          <p>Travel tips, exclusive deals, and event tour alerts straight to your inbox.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="nl-form">
+            <input type="email" placeholder="Enter your email address..." />
+            <button>Subscribe Now</button>
+          </div>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.32);margin-top:0.6rem;">No spam. Unsubscribe anytime. Join 5,000+ travellers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /home page -->
+
+
+<!-- ═══════════════════════════ PLANNER PAGE ═══════════════════════════ -->
+<div id="page-planner" class="page">
+  <div class="planner-hero" style="padding-top:80px;">
+    <div class="container">
+      <span class="lbl lbl-light">Trip Builder</span>
+      <h2 style="color:#fff;font-size:2.6rem;">Build Your <em style="color:var(--ochre)">Own</em> Trip</h2>
+      <p style="color:rgba(255,255,255,0.72);max-width:480px;margin-top:0.4rem;">A tailor-made itinerary that suits your interests, budget, and travel dates.</p>
+    </div>
+  </div>
+  <section class="section section-sand">
+    <div class="container">
+      <div class="row gy-5 align-items-start">
+        <!-- left: steps + photos -->
+        <div class="col-lg-5">
+          <div style="display:flex;flex-direction:column;gap:1.6rem;">
+            <div class="step-row"><div class="step-num">1</div><div><strong style="color:var(--deep)">Tell us your dream</strong><br><small style="color:#888">Fill out your travel preferences</small></div></div>
+            <div class="step-row"><div class="step-num">2</div><div><strong style="color:var(--deep)">We craft your itinerary</strong><br><small style="color:#888">Our experts design a personalised plan within 24 hours</small></div></div>
+            <div class="step-row"><div class="step-num">3</div><div><strong style="color:var(--deep)">Approve &amp; adventure!</strong><br><small style="color:#888">Confirm and get ready for the trip of a lifetime</small></div></div>
+          </div>
+          <div class="plan-img-grid">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Sydney" />
+            <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&q=80" alt="Wildlife" />
+            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Bondi" />
+            <img src="https://images.unsplash.com/photo-1568572933382-74d440642117?w=400&q=80" alt="Outback" />
+          </div>
+        </div>
+        <!-- right: form -->
+        <div class="col-lg-6 offset-lg-1">
+          <div class="plan-box">
+            <h4 style="margin-bottom:1.5rem;">Plan My Australian Adventure</h4>
+            <div class="row g-3">
+              <div class="col-12"><label>Full Name</label><input type="text" class="form-control" placeholder="Your name" /></div>
+              <div class="col-md-6"><label>Email Address</label><input type="email" class="form-control" placeholder="you@email.com" /></div>
+              <div class="col-md-6"><label>Phone Number</label><input type="tel" class="form-control" placeholder="+61 ..." /></div>
+              <div class="col-md-6"><label>Travel Style</label>
+                <select class="form-select">
+                  <option>Solo Adventure</option><option>Group Tour</option><option>Family Trip</option><option>Event Tour</option><option>Honeymoon</option>
+                </select>
+              </div>
+              <div class="col-md-6"><label>Trip Duration</label>
+                <select class="form-select">
+                  <option>3-5 Days</option><option>7-10 Days</option><option>10-14 Days</option><option>2+ Weeks</option>
+                </select>
+              </div>
+              <div class="col-md-6"><label>Departure Date</label><input type="date" class="form-control" /></div>
+              <div class="col-md-6"><label>Number of Travellers</label><input type="number" class="form-control" placeholder="e.g. 2" min="1" /></div>
+              <div class="col-md-6"><label>Budget (per person)</label>
+                <select class="form-select">
+                  <option>Under $1,500</option><option>$1,500 – $3,000</option><option>$3,000 – $5,000</option><option>$5,000+</option>
+                </select>
+              </div>
+              <div class="col-md-6"><label>Interests</label>
+                <select class="form-select">
+                  <option>Nature & Wildlife</option><option>Cities & Culture</option><option>Beaches & Coast</option><option>Sports Events</option><option>Food & Wine</option>
+                </select>
+              </div>
+              <div class="col-12"><label>Tell us about your dream trip</label><textarea class="form-control" rows="3" placeholder="Any specific places, activities, or special requests..."></textarea></div>
+              <div class="col-12">
+                <button class="btn-oz" style="width:100%;padding:1rem;font-size:0.97rem;">🗺️ &nbsp;Send My Trip Request</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- /planner -->
+
+
+<!-- ═══════════════════════════ DETAIL PAGE ═══════════════════════════ -->
+<div id="page-detail" class="page">
+  <section class="section" style="padding-top:100px;">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#" onclick="showPage('home')">Home</a></li>
+          <li class="breadcrumb-item"><a href="#" onclick="showPage('home')">Tours</a></li>
+          <li class="breadcrumb-item active">10-Day Australia Highlights</li>
+        </ol>
+      </nav>
+      <div class="row g-4">
+        <!-- MAIN -->
+        <div class="col-lg-8">
+          <div class="detail-hero-banner">
+            <div>
+              <span style="background:var(--ochre);display:inline-block;font-size:0.66rem;letter-spacing:2px;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:2px;color:#fff;font-weight:700;margin-bottom:0.7rem;">Group Tour</span>
+              <h2>10-Day Australia Highlights Group Tour</h2>
+              <p>Explore Australia's most iconic cities and landscapes with a friendly, fun-filled group.</p>
+            </div>
+          </div>
+          <!-- Photo grid -->
+          <div class="photo-grid">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80" alt="Sydney" />
+            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Bondi" />
+            <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&q=80" alt="Wildlife" />
+          </div>
+          <!-- Overview -->
+          <div class="info-card">
+            <div class="detail-meta">
+              <div class="detail-meta-item"><div>Duration</div><strong>10 Days / 9 Nights</strong></div>
+              <div class="detail-meta-item"><div>Group Size</div><strong>Max 16 People</strong></div>
+              <div class="detail-meta-item"><div>Destinations</div><strong>Sydney · Gold Coast · Melbourne</strong></div>
+              <div class="detail-meta-item"><div>Difficulty</div><strong>Easy – Moderate</strong></div>
+            </div>
+            <h6>Overview</h6>
+            <p style="font-size:0.87rem;color:#555;line-height:1.8;margin:0;">Experience the perfect blend of nature, culture, and adventure on this 10-day guided group tour. From the world-famous Sydney Opera House to the sun-kissed beaches of Gold Coast and the laid-back charm of Melbourne, this trip is designed for travellers who want to see it all — stress-free.</p>
+          </div>
+          <!-- Highlights -->
+          <div class="info-card">
+            <h6>Tour Highlights</h6>
+            <ul>
+              <li><i class="bi bi-check-circle-fill"></i>Witness Sydney Harbour and Opera House from the best viewpoints</li>
+              <li><i class="bi bi-check-circle-fill"></i>Meet kangaroos &amp; koalas at a wildlife sanctuary</li>
+              <li><i class="bi bi-check-circle-fill"></i>Enjoy thrilling theme parks on the Gold Coast</li>
+              <li><i class="bi bi-check-circle-fill"></i>Explore Melbourne's laneways, art, and coffee culture</li>
+              <li><i class="bi bi-check-circle-fill"></i>Journey along the breathtaking Great Ocean Road</li>
+              <li><i class="bi bi-check-circle-fill"></i>Travel with experienced tour leaders and a friendly group</li>
+            </ul>
+          </div>
+          <!-- Inclusions / Exclusions -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="info-card h-100">
+                <h6><i class="bi bi-check2-all me-1" style="color:var(--green)"></i>Inclusions</h6>
+                <ul>
+                  <li><i class="bi bi-check-circle" style="color:var(--green)"></i>9 nights accommodation (3–4 star hotels)</li>
+                  <li><i class="bi bi-check-circle" style="color:var(--green)"></i>Daily breakfast included</li>
+                  <li><i class="bi bi-check-circle" style="color:var(--green)"></i>All domestic transfers &amp; inter-city travel</li>
+                  <li><i class="bi bi-check-circle" style="color:var(--green)"></i>Theme park entry &amp; guided tours</li>
+                  <li><i class="bi bi-check-circle" style="color:var(--green)"></i>Airport pickup and local support</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-card h-100">
+                <h6><i class="bi bi-x-circle me-1" style="color:var(--rust)"></i>Exclusions</h6>
+                <ul>
+                  <li><i class="bi bi-x-circle" style="color:var(--rust)"></i>International flights</li>
+                  <li><i class="bi bi-x-circle" style="color:var(--rust)"></i>Visa fees</li>
+                  <li><i class="bi bi-x-circle" style="color:var(--rust)"></i>Personal expenses &amp; unspecified meals</li>
+                  <li><i class="bi bi-x-circle" style="color:var(--rust)"></i>Travel insurance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Itinerary -->
+          <div class="info-card">
+            <h6>Itinerary Snapshot</h6>
+            <div class="itin-day">
+              <img src="https://images.unsplash.com/photo-1524293581917-878a6d017c71?w=200&q=80" alt="Sydney" />
+              <div><h6>Day 1–3: Sydney</h6><p>City tour, Bondi Beach, Harbour Bridge viewpoints, Opera House visit, and harbour cruise.</p></div>
+            </div>
+            <div class="itin-day">
+              <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=200&q=80" alt="Gold Coast" />
+              <div><h6>Day 4–6: Gold Coast</h6><p>Theme parks, beaches, hinterland rainforest excursion, and vibrant nightlife.</p></div>
+            </div>
+            <div class="itin-day">
+              <img src="https://images.unsplash.com/photo-1474321381769-bb61b80c7a5f?w=200&q=80" alt="Melbourne" />
+              <div><h6>Day 7–10: Melbourne</h6><p>City exploration, Queen Victoria Market, laneways art tour, Great Ocean Road day trip, Twelve Apostles.</p></div>
+            </div>
+            <button class="btn-oz mt-3" style="font-size:0.84rem;padding:0.6rem 1.2rem;">⬇ Download Full Itinerary</button>
+          </div>
+        </div>
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+          <div class="price-box">
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:2px;margin-bottom:0.4rem;">Starting From</div>
+            <div class="amount">$2,499</div>
+            <div class="per">per person (twin share)</div>
+            <div style="background:rgba(196,118,42,0.14);border:1px solid rgba(196,118,42,0.3);border-radius:2px;padding:0.7rem;margin-bottom:1.3rem;font-size:0.79rem;color:rgba(255,255,255,0.68);text-align:left;">
+              <i class="bi bi-tag-fill me-1" style="color:var(--ochre)"></i><strong style="color:var(--ochre)">Group discounts available.</strong> Save up to 15% for 4+ travellers.
+            </div>
+            <button class="btn-book">Book This Tour</button>
+            <button class="btn-enquire">Enquire Now</button>
+            <div style="margin-top:1.3rem;padding-top:1.3rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.77rem;color:rgba(255,255,255,0.38);text-align:left;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><i class="bi bi-shield-check" style="color:var(--ochre)"></i>Secure deposit booking</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><i class="bi bi-people" style="color:var(--ochre)"></i>Limited seats per group</div>
+              <div style="display:flex;align-items:center;gap:8px;"><i class="bi bi-headset" style="color:var(--ochre)"></i>24/7 customer support</div>
+            </div>
+          </div>
+          <div class="thumb-strip">
+            <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=200&q=80" alt="Opera House" />
+            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=200&q=80" alt="Bondi" />
+            <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=200&q=80" alt="Wildlife" />
+          </div>
+          <div class="info-card mt-3">
+            <h6>Have Questions?</h6>
+            <p style="font-size:0.82rem;color:#666;margin-bottom:0.9rem;">Our travel specialists are happy to help.</p>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.6rem;"><i class="bi bi-telephone" style="color:var(--ochre)"></i><span style="font-size:0.86rem;font-weight:600;color:var(--deep);">+61 1800 000 000</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><i class="bi bi-envelope" style="color:var(--ochre)"></i><span style="font-size:0.86rem;font-weight:600;color:var(--deep);">hello@ozzietrip.com</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- /detail -->
+
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="brand">OzzieTrip</div>
+        <p>Australia's trusted travel partner for curated tours, solo adventures, group escapes, and event experiences since 2012.</p>
+        <div class="socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Tours</h6>
+        <ul>
+          <li><a href="#">Group Tours</a></li>
+          <li><a href="#">Solo Travel</a></li>
+          <li><a href="#">Event Tours</a></li>
+          <li><a href="#">Custom Trips</a></li>
+          <li><a href="#">All Tours</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Destinations</h6>
+        <ul>
+          <li><a href="#">Sydney</a></li>
+          <li><a href="#">Melbourne</a></li>
+          <li><a href="#">Gold Coast</a></li>
+          <li><a href="#">Outback</a></li>
+          <li><a href="#">Great Ocean Road</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Company</h6>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Reviews</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <h6>Support</h6>
+        <ul>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Booking Terms</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Travel Insurance</a></li>
+          <li><a href="#">Visa Info</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 OzzieTrip. All rights reserved. Made with ❤️ for Australian adventures.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ─── HERO CAROUSEL ─── */
+(function () {
+  var slides   = document.querySelectorAll('.hero-slide');
+  var dotsWrap = document.getElementById('heroDots');
+  var counter  = document.getElementById('heroCounter');
+  var cur      = 0;
+  var timer;
+  var total    = slides.length;
+
+  // Build dots
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('button');
+    d.className = 'hero-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.addEventListener('click', (function(idx){ return function(){ go(idx); }; })(i));
+    dotsWrap.appendChild(d);
+  }
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    dotsWrap.children[cur].classList.remove('active');
+    cur = ((n % total) + total) % total;
+    slides[cur].classList.add('active');
+    dotsWrap.children[cur].classList.add('active');
+    counter.textContent = pad(cur + 1) + ' / ' + pad(total);
+    clearInterval(timer);
+    timer = setInterval(function(){ go(cur + 1); }, 5000);
+  }
+
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+
+  // Arrow buttons
+  window.heroMove = function(dir){ go(cur + dir); };
+
+  // Auto-play
+  timer = setInterval(function(){ go(cur + 1); }, 5000);
+
+  // Keyboard
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowLeft')  go(cur - 1);
+    if (e.key === 'ArrowRight') go(cur + 1);
+  });
+
+  // Touch swipe
+  var tx = 0;
+  var heroEl = document.querySelector('.hero');
+  heroEl.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+  heroEl.addEventListener('touchend',   function(e){ var d = tx - e.changedTouches[0].clientX; if(Math.abs(d)>50) go(cur + (d>0?1:-1)); }, {passive:true});
+})();
+
+/* ─── PAGE SWITCHING ─── */
+function showPage(id) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(runFadeUp, 120);
+}
+
+function gotoTours() {
+  showPage('home');
+  setTimeout(function(){ var el = document.getElementById('tours'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 220);
+}
+
+/* ─── MOBILE NAV ─── */
+function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+function closeNav()  { document.getElementById('navLinks').classList.remove('open'); }
+
+/* ─── FADE-UP ON SCROLL ─── */
+function runFadeUp() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        setTimeout(function(){ el.classList.add('vis'); }, i * 80);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fu:not(.vis)').forEach(function(el){ obs.observe(el); });
+}
+runFadeUp();
+</script>
+</body>
+</html>

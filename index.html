@@ -58,102 +58,85 @@
       max-width: 100%;
     }
 
-    /* ── NAVBAR ── */
-    .site-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      background: #fff;
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(139, 42, 106, 0.35);
-      padding: .85rem 0;
-    }
+    /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid var(--sand);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
 
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
 
-    .nav-logo {
-      height: 65px;
-      cursor: pointer;
-      display: block;
-    }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: .2rem;
-      list-style: none;
-    }
+        nav a {
+            text-decoration: none;
+            color: var(--deep);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
 
-    .nav-links li a,
-    .nav-links li button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      --purp: #3B3A8F;
-      color: var(--purp);
-      font-size: .86rem;
-      font-weight: 500;
-      padding: .38rem .82rem;
-      border-radius: 3px;
-      transition: color .2s;
-      font-family: "Poppins", sans-serif;
-    }
+        nav a:hover {
+            color: var(--red);
+        }
 
-    .nav-links li a:hover,
-    .nav-links li button:hover {
-      color: #fff;
-    }
+        .nav-cta {
+            background: var(--grad);
+            color: white;
+            padding: 0.6rem 1.4rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
 
-    .nav-cta {
-      background: var(--grad) !important;
-      color: #fff !important;
-      border-radius: 3px !important;
-    }
-
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: 1.5px solid rgba(255, 255, 255, .35);
-      color: #fff;
-      padding: .3rem .6rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(232, 35, 42, 0.3);
+        }
 
     @media(max-width:768px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(26, 22, 64, .98);
-        padding: 1rem;
-        gap: .15rem;
-      }
+      nav ul {
+                gap: 1.2rem;
+            }
 
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-toggle {
-        display: block;
-      }
+            nav a {
+                font-size: 0.8rem;
+            }
     }
 
     /* ── HERO CAROUSEL ── */
     .hero {
       position: relative;
-      min-height: 100vh;
+      min-height: 90vh;
       display: flex;
       align-items: center;
       padding-top: 80px;
@@ -1139,7 +1122,7 @@
 
     .plan-img-grid img {
       width: 100%;
-      height: 140px;
+      height: 160px;
       object-fit: cover;
       border-radius: 6px;
       display: block;
@@ -1473,7 +1456,7 @@
     }
 
     footer .brand img {
-      height: 60px;
+      height: 75px;
       margin-bottom: .6rem;
     }
 
@@ -1586,22 +1569,17 @@
 
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="site-nav">
-    <div class="container">
-      <div class="nav-inner">
-        <img src="Ozzietrip-Logo.png" OzzieTrip" class="nav-logo" onclick="showPage('home')" style="cursor:pointer;" />
-        <button class="nav-toggle" onclick="toggleNav()">&#9776;</button>
-        <ul class="nav-links" id="navLinks">
-          <li><a href="#" onclick="showPage('home');closeNav()">Home</a></li>
-          <li><a href="#" onclick="gotoTours();closeNav()">Tours</a></li>
-          <li><a href="#" onclick="showPage('planner');closeNav()">Trip Planner</a></li>
-          <li><a href="#" onclick="showPage('detail');closeNav()">Tour Detail</a></li>
-          <li><button class="nav-cta" onclick="showPage('detail');closeNav()">Book Now</button></li>
+  <!-- Navigation -->
+    <nav>
+        <a href="/" class="logo"><img src="Ozzietrip-Logo.png" width="120" alt=""></a>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/tours.html">Tours</a></li>
+            <li><a href="/trip-planner.html">Trip Planner</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><button class="nav-cta">Know more</button></li>
         </ul>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
   <!-- ═══════ HOME ═══════ -->
   <div id="page-home" class="page active">
@@ -1623,7 +1601,7 @@
       <div class="hero-counter" id="heroCounter">01 / 05</div>
       <div class="scroll-hint">Scroll</div>
       <div class="hero-float-cards">
-        <div class="hfc"><img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=300&q=80"
+        <div class="hfc"><img src="Sydney.avif?w=300&q=80"
             alt="Sydney" />
           <div class="hfc-label">Sydney</div>
         </div>
@@ -1662,7 +1640,7 @@
               <div class="stat-lbl">Happy Travellers</div>
             </div>
           </div> -->
-          <div class="col-6 col-md-4">
+          <!-- <div class="col-6 col-md-4">
             <div class="stat-box">
               <div class="stat-num">50+</div>
               <div class="stat-lbl">Curated Tours</div>
@@ -1679,7 +1657,7 @@
               <div class="stat-num">4.9 &#9733;</div>
               <div class="stat-lbl">Average Rating</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -1976,6 +1954,80 @@
       </div>
     </section>
 
+    <section class="section" style="background:var(--sand);">
+      <div class="container">
+        <p style="text-align: center; color: var(--red); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">PLAN YOUR TRIP</p>
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; margin-bottom: 3rem; font-weight: 800;">Create Your <em style="background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic;">Perfect Adventure</em></h2>
+        <div class="row gy-5 align-items-center">
+          <div class="col-lg-5">
+            <div style="display:flex;flex-direction:column;gap:2.5rem;">
+              <div class="step-row">
+                <div class="step-num">1</div>
+                <div><strong style="color:var(--deep)">Tell us your dream</strong><br><small style="color:#888">Fill out
+                    your travel preferences</small></div>
+              </div>
+              <div class="step-row">
+                <div class="step-num">2</div>
+                <div><strong style="color:var(--deep)">We craft your itinerary</strong><br><small style="color:#888">Our
+                    experts design a personalised plan within 24 hours</small></div>
+              </div>
+              <div class="step-row">
+                <div class="step-num">3</div>
+                <div><strong style="color:var(--deep)">Approve &amp; adventure!</strong><br><small style="color:#888">Confirm and get ready for the trip of a lifetime</small></div>
+              </div>
+            </div>
+            <div class="plan-img-grid">
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&amp;q=80" alt="Sydney">
+              <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&amp;q=80" alt="Wildlife">
+              <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&amp;q=80" alt="Bondi">
+              <img src="beach road.avif?w=400&amp;q=80" alt="Outback">
+            </div>
+          </div>
+          <div class="col-lg-6 offset-lg-1">
+            <div class="plan-box">
+              <h4 style="margin-bottom:1.4rem;font-size:1.4rem;">Plan My Australian Adventure</h4>
+              <div class="row g-3">
+                <div class="col-12"><label>Full Name</label><input type="text" class="form-control" placeholder="Your name"></div>
+                <div class="col-md-6"><label>Email Address</label><input type="email" class="form-control" placeholder="you@email.com"></div>
+                <div class="col-md-6"><label>Phone Number</label><input type="tel" class="form-control" placeholder="+61 ..."></div>
+                <div class="col-md-6"><label>Travel Style</label><select class="form-select">
+                    <option>Solo Adventure</option>
+                    <option>Group Tour</option>
+                    <option>Family Trip</option>
+                    <option>Event Tour</option>
+                    <option>Honeymoon</option>
+                  </select></div>
+                <div class="col-md-6"><label>Trip Duration</label><select class="form-select">
+                    <option>3-5 Days</option>
+                    <option>7-10 Days</option>
+                    <option>10-14 Days</option>
+                    <option>2+ Weeks</option>
+                  </select></div>
+                <div class="col-md-6"><label>Departure Date</label><input type="date" class="form-control"></div>
+                <div class="col-md-6"><label>Number of Travellers</label><input type="number" class="form-control" placeholder="e.g. 2" min="1"></div>
+                <div class="col-md-6"><label>Budget (per person)</label><select class="form-select">
+                    <option>Under $1,500</option>
+                    <option>$1,500 – $3,000</option>
+                    <option>$3,000 – $5,000</option>
+                    <option>$5,000+</option>
+                  </select></div>
+                <div class="col-md-6"><label>Interests</label><select class="form-select">
+                    <option>Nature &amp; Wildlife</option>
+                    <option>Cities &amp; Culture</option>
+                    <option>Beaches &amp; Coast</option>
+                    <option>Sports Events</option>
+                    <option>Food &amp; Wine</option>
+                  </select></div>
+                <div class="col-12"><label>Tell us about your dream trip</label><textarea class="form-control" rows="3" placeholder="Any specific places, activities, or special requests..."></textarea></div>
+                <div class="col-12"><button class="btn-oz" style="width:100%;padding:.95rem;font-size:.94rem;">🗺️ &nbsp;Send My Trip
+                    Request</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- NEWSLETTER -->
     <div class="newsletter">
       <div class="container">
@@ -1999,273 +2051,6 @@
 
   </div><!-- /home -->
 
-  <!-- ═══════ PLANNER ═══════ -->
-  <div id="page-planner" class="page">
-    <div class="planner-hero">
-      <div class="container">
-        <span
-          style="font-size:.68rem;letter-spacing:4px;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:.5rem;display:block;">Trip
-          Builder</span>
-        <h2 style="color:#fff;font-size:2.5rem;">Build Your <em
-            style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Own</em>
-          Trip</h2>
-        <p style="color:rgba(255,255,255,.7);max-width:460px;margin-top:.4rem;font-size:.91rem;">Looking for something
-          truly personal? Design a tailor-made itinerary around your interests, budget, and travel dates.</p>
-      </div>
-    </div>
-    <section class="section" style="background:var(--sand);">
-      <div class="container">
-        <div class="row gy-5 align-items-start">
-          <div class="col-lg-5">
-            <div style="display:flex;flex-direction:column;gap:1.5rem;">
-              <div class="step-row">
-                <div class="step-num">1</div>
-                <div><strong style="color:var(--deep)">Tell us your dream</strong><br><small style="color:#888">Fill out
-                    your travel preferences</small></div>
-              </div>
-              <div class="step-row">
-                <div class="step-num">2</div>
-                <div><strong style="color:var(--deep)">We craft your itinerary</strong><br><small style="color:#888">Our
-                    experts design a personalised plan within 24 hours</small></div>
-              </div>
-              <div class="step-row">
-                <div class="step-num">3</div>
-                <div><strong style="color:var(--deep)">Approve &amp; adventure!</strong><br><small
-                    style="color:#888">Confirm and get ready for the trip of a lifetime</small></div>
-              </div>
-            </div>
-            <div class="plan-img-grid">
-              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Sydney" />
-              <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&q=80" alt="Wildlife" />
-              <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Bondi" />
-              <img src="https://images.unsplash.com/photo-1568572933382-74d440642117?w=400&q=80" alt="Outback" />
-            </div>
-          </div>
-          <div class="col-lg-6 offset-lg-1">
-            <div class="plan-box">
-              <h4 style="margin-bottom:1.4rem;font-size:1.4rem;">Plan My Australian Adventure</h4>
-              <div class="row g-3">
-                <div class="col-12"><label>Full Name</label><input type="text" class="form-control"
-                    placeholder="Your name" /></div>
-                <div class="col-md-6"><label>Email Address</label><input type="email" class="form-control"
-                    placeholder="you@email.com" /></div>
-                <div class="col-md-6"><label>Phone Number</label><input type="tel" class="form-control"
-                    placeholder="+61 ..." /></div>
-                <div class="col-md-6"><label>Travel Style</label><select class="form-select">
-                    <option>Solo Adventure</option>
-                    <option>Group Tour</option>
-                    <option>Family Trip</option>
-                    <option>Event Tour</option>
-                    <option>Honeymoon</option>
-                  </select></div>
-                <div class="col-md-6"><label>Trip Duration</label><select class="form-select">
-                    <option>3-5 Days</option>
-                    <option>7-10 Days</option>
-                    <option>10-14 Days</option>
-                    <option>2+ Weeks</option>
-                  </select></div>
-                <div class="col-md-6"><label>Departure Date</label><input type="date" class="form-control" /></div>
-                <div class="col-md-6"><label>Number of Travellers</label><input type="number" class="form-control"
-                    placeholder="e.g. 2" min="1" /></div>
-                <div class="col-md-6"><label>Budget (per person)</label><select class="form-select">
-                    <option>Under $1,500</option>
-                    <option>$1,500 – $3,000</option>
-                    <option>$3,000 – $5,000</option>
-                    <option>$5,000+</option>
-                  </select></div>
-                <div class="col-md-6"><label>Interests</label><select class="form-select">
-                    <option>Nature &amp; Wildlife</option>
-                    <option>Cities &amp; Culture</option>
-                    <option>Beaches &amp; Coast</option>
-                    <option>Sports Events</option>
-                    <option>Food &amp; Wine</option>
-                  </select></div>
-                <div class="col-12"><label>Tell us about your dream trip</label><textarea class="form-control" rows="3"
-                    placeholder="Any specific places, activities, or special requests..."></textarea></div>
-                <div class="col-12"><button class="btn-oz"
-                    style="width:100%;padding:.95rem;font-size:.94rem;">&#x1F5FA;&#xFE0F; &nbsp;Send My Trip
-                    Request</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ═══════ DETAIL ═══════ -->
-  <div id="page-detail" class="page">
-    <section class="section" style="padding-top:100px;">
-      <div class="container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#" onclick="showPage('home')">Home</a></li>
-            <li class="breadcrumb-item"><a href="#" onclick="showPage('home')">Tours</a></li>
-            <li class="breadcrumb-item active">10-Day Australia Highlights</li>
-          </ol>
-        </nav>
-        <div class="row g-4">
-          <div class="col-lg-8">
-            <div class="detail-hero-banner">
-              <div>
-                <span
-                  style="background:var(--grad);display:inline-block;font-size:.64rem;letter-spacing:2px;text-transform:uppercase;padding:.26rem .68rem;border-radius:3px;color:#fff;font-weight:700;margin-bottom:.7rem;">Group
-                  Tour</span>
-                <h2>10-Day Australia Highlights Group Tour</h2>
-                <p>Explore Australia's most iconic cities and landscapes with a welcoming, fun-filled group.</p>
-              </div>
-            </div>
-            <div class="photo-grid">
-              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80" alt="Sydney" />
-              <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Bondi" />
-              <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=400&q=80" alt="Wildlife" />
-            </div>
-            <div class="info-card">
-              <div class="detail-meta">
-                <div class="detail-meta-item">
-                  <div>Duration</div><strong>10 Days / 9 Nights</strong>
-                </div>
-                <div class="detail-meta-item">
-                  <div>Group Size</div><strong>Max 16 People</strong>
-                </div>
-                <div class="detail-meta-item">
-                  <div>Destinations</div><strong>Sydney · Gold Coast · Melbourne</strong>
-                </div>
-                <div class="detail-meta-item">
-                  <div>Difficulty</div><strong>Easy – Moderate</strong>
-                </div>
-              </div>
-              <h6>Overview</h6>
-              <p style="font-size:.85rem;color:#555;line-height:1.82;margin:0;">Experience the perfect mix of nature,
-                culture, and adventure on this 10-day guided group tour. From the world-famous Sydney Opera House to the
-                golden beaches of the Gold Coast and the vibrant charm of Melbourne — this itinerary is built for
-                travellers who want to see it all, without the stress.</p>
-            </div>
-            <div class="info-card">
-              <h6>Tour Highlights</h6>
-              <ul>
-                <li><i class="bi bi-check-circle-fill"></i>Take in Sydney Harbour and the Opera House from the most
-                  spectacular viewpoints</li>
-                <li><i class="bi bi-check-circle-fill"></i>Meet kangaroos and koalas up close at a native wildlife
-                  sanctuary</li>
-                <li><i class="bi bi-check-circle-fill"></i>Thrill-seekers rejoice at the Gold Coast's world-class theme
-                  parks</li>
-                <li><i class="bi bi-check-circle-fill"></i>Uncover Melbourne's iconic laneways, thriving arts scene, and
-                  legendary coffee culture</li>
-                <li><i class="bi bi-check-circle-fill"></i>Journey along the awe-inspiring Great Ocean Road</li>
-                <li><i class="bi bi-check-circle-fill"></i>Travel with experienced tour leaders and a great group of
-                  like-minded adventurers</li>
-              </ul>
-            </div>
-            <div class="row g-3 mb-4">
-              <div class="col-md-6">
-                <div class="info-card h-100">
-                  <h6><i class="bi bi-check2-all me-1"
-                      style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>Inclusions
-                  </h6>
-                  <ul>
-                    <li><i class="bi bi-check-circle"
-                        style="background:linear-gradient(135deg,#27AE60,#1E8449);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>9
-                      nights accommodation (3–4 star hotels)</li>
-                    <li><i class="bi bi-check-circle"
-                        style="background:linear-gradient(135deg,#27AE60,#1E8449);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>Daily
-                      breakfast</li>
-                    <li><i class="bi bi-check-circle"
-                        style="background:linear-gradient(135deg,#27AE60,#1E8449);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>All
-                      domestic transfers and inter-city travel</li>
-                    <li><i class="bi bi-check-circle"
-                        style="background:linear-gradient(135deg,#27AE60,#1E8449);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>Theme
-                      park entry and guided tours</li>
-                    <li><i class="bi bi-check-circle"
-                        style="background:linear-gradient(135deg,#27AE60,#1E8449);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>Airport
-                      pickup and on-the-ground local support</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-card h-100">
-                  <h6><i class="bi bi-x-circle me-1" style="color:#E8232A;"></i>Exclusions</h6>
-                  <ul>
-                    <li><i class="bi bi-x-circle" style="color:#E8232A;"></i>International flights</li>
-                    <li><i class="bi bi-x-circle" style="color:#E8232A;"></i>Visa fees</li>
-                    <li><i class="bi bi-x-circle" style="color:#E8232A;"></i>Personal expenses and meals not specified
-                    </li>
-                    <li><i class="bi bi-x-circle" style="color:#E8232A;"></i>Travel insurance</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="info-card">
-              <h6>Itinerary Snapshot</h6>
-              <div class="itin-day"><img src="https://images.unsplash.com/photo-1524293581917-878a6d017c71?w=200&q=80"
-                  alt="Sydney" />
-                <div>
-                  <h6>Day 1–3: Sydney</h6>
-                  <p>City highlights tour, Bondi Beach, and iconic Harbour Bridge viewpoints.</p>
-                </div>
-              </div>
-              <div class="itin-day"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=200&q=80"
-                  alt="Gold Coast" />
-                <div>
-                  <h6>Day 4–6: Gold Coast</h6>
-                  <p>Thrilling theme parks, sun-soaked beaches, and vibrant nightlife.</p>
-                </div>
-              </div>
-              <div class="itin-day"><img src="https://images.unsplash.com/photo-1474321381769-bb61b80c7a5f?w=200&q=80"
-                  alt="Melbourne" />
-                <div>
-                  <h6>Day 7–10: Melbourne</h6>
-                  <p>City exploration and a full-day Great Ocean Road trip.</p>
-                </div>
-              </div>
-              <button class="btn-oz mt-3" style="font-size:.83rem;padding:.58rem 1.1rem;">&#x2B07; Download Full
-                Itinerary</button>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="price-box">
-              <div
-                style="font-size:.68rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:2px;margin-bottom:.4rem;">
-                From</div>
-              <div class="amount">$2,499</div>
-              <div class="per">per person (twin share)</div>
-              <div
-                style="background:rgba(232,35,42,.12);border:1px solid rgba(232,35,42,.3);border-radius:4px;padding:.68rem;margin-bottom:1.25rem;font-size:.78rem;color:rgba(255,255,255,.65);text-align:left;">
-                <i class="bi bi-tag-fill me-1" style="color:#E8232A;"></i><strong style="color:#E8232A;">Group discounts
-                  available</strong> — ask us for details.
-              </div>
-              <button class="btn-book">Book This Tour</button>
-              <button class="btn-enquire">Enquire Now</button>
-              <div
-                style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.08);font-size:.75rem;color:rgba(255,255,255,.35);text-align:left;">
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><i class="bi bi-shield-check"
-                    style="color:#E8232A;"></i>Secure deposit — places are limited</div>
-                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><i class="bi bi-people"
-                    style="color:#E8232A;"></i>Max 16 travellers per group</div>
-                <div style="display:flex;align-items:center;gap:7px;"><i class="bi bi-headset"
-                    style="color:#E8232A;"></i>24/7 dedicated support</div>
-              </div>
-            </div>
-            <div class="thumb-strip">
-              <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=200&q=80" alt="Opera House" />
-              <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=200&q=80" alt="Bondi" />
-              <img src="https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=200&q=80" alt="Wildlife" />
-            </div>
-            <div class="info-card mt-3">
-              <h6>Have Questions?</h6>
-              <p style="font-size:.8rem;color:#666;margin-bottom:.85rem;">Our travel specialists are happy to help.</p>
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:.55rem;"><i class="bi bi-telephone"
-                  style="color:var(--red);"></i><span style="font-size:.84rem;font-weight:600;color:var(--deep);">+61
-                  1800 000 000</span></div>
-              <div style="display:flex;align-items:center;gap:8px;"><i class="bi bi-envelope"
-                  style="color:var(--red);"></i><span
-                  style="font-size:.84rem;font-weight:600;color:var(--deep);">hello@ozzietrip.com</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -2282,9 +2067,10 @@
         <div class="col-lg-3 col-md-3 col-6">
           <h6>Company</h6>
           <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Our Team</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="tours.html">Tours</a></li>
+            <li><a href="trip-planner.html">Trip Planner</a></li>
+            <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
 

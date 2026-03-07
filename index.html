@@ -59,78 +59,77 @@
     }
 
     /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.2rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid var(--sand);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
+    .custom-navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--sand);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 0.8rem 2rem;
+    }
 
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: var(--grad);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
+    @media(max-width: 991px) {
+      .custom-navbar {
+        padding: 0.8rem 1rem;
+      }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-            align-items: center;
-        }
+      .navbar-collapse {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 0.5rem;
+      }
+    }
 
-        nav a {
-            text-decoration: none;
-            color: var(--deep);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
 
-        nav a:hover {
-            color: var(--red);
-        }
+    .custom-navbar .nav-link {
+      text-decoration: none;
+      color: var(--deep);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
 
-        .nav-cta {
-            background: var(--grad);
-            color: white;
-            padding: 0.6rem 1.4rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
+    .custom-navbar .nav-link:hover {
+      color: var(--red);
+    }
 
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(232, 35, 42, 0.3);
-        }
+    .nav-cta {
+      background: var(--grad);
+      color: white;
+      padding: 0.6rem 1.4rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
 
-    @media(max-width:768px) {
-      nav ul {
-                gap: 1.2rem;
-            }
+    .nav-cta a {
+      color: #fff;
+      text-decoration: none;
+    }
 
-            nav a {
-                font-size: 0.8rem;
-            }
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(232, 35, 42, 0.3);
     }
 
     /* ── HERO CAROUSEL ── */
@@ -1570,16 +1569,24 @@
 <body>
 
   <!-- Navigation -->
-    <nav>
-        <a href="index.html" class="logo"><img src="Ozzietrip-Logo.png" width="120" alt=""></a>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="tours.html">Tours</a></li>
-            <li><a href="trip-planner.html">Trip Planner</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><button class="nav-cta"><a style="color: #fff;" href="#form">Know more</a></button></li>
+  <nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid">
+      <a href="index.html" class="navbar-brand logo"><img src="Ozzietrip-Logo.png" width="120" alt=""></a>
+      <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+        data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="tours.html">Tours</a></li>
+          <li class="nav-item"><a class="nav-link" href="trip-planner.html">Trip Planner</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item mt-3 mt-lg-0"><button class="nav-cta"><a href="#form">Know more</a></button></li>
         </ul>
-    </nav>
+      </div>
+    </div>
+  </nav>
 
   <!-- ═══════ HOME ═══════ -->
   <div id="page-home" class="page active">
@@ -1601,8 +1608,7 @@
       <div class="hero-counter" id="heroCounter">01 / 05</div>
       <!-- <div class="scroll-hint">Scroll</div> -->
       <div class="hero-float-cards">
-        <div class="hfc"><img src="Sydney.avif?w=300&q=80"
-            alt="Sydney" />
+        <div class="hfc"><img src="Sydney.avif?w=300&q=80" alt="Sydney" />
           <div class="hfc-label">Sydney</div>
         </div>
         <div class="hfc"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=300&q=80"
@@ -1956,8 +1962,14 @@
 
     <section class="section" style="background:var(--sand);" id="form">
       <div class="container">
-        <p style="text-align: center; color: var(--red); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">PLAN YOUR TRIP</p>
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; margin-bottom: 3rem; font-weight: 800;">Create Your <em style="background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic;">Perfect Adventure</em></h2>
+        <p
+          style="text-align: center; color: var(--red); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">
+          PLAN YOUR TRIP</p>
+        <h2
+          style="font-family: 'Playfair Display', serif; font-size: 2.8rem; text-align: center; margin-bottom: 3rem; font-weight: 800;">
+          Create Your <em
+            style="background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic;">Perfect
+            Adventure</em></h2>
         <div class="row gy-5 align-items-center">
           <div class="col-lg-5">
             <div style="display:flex;flex-direction:column;gap:2.5rem;">
@@ -1973,7 +1985,8 @@
               </div>
               <div class="step-row">
                 <div class="step-num">3</div>
-                <div><strong style="color:var(--deep)">Approve &amp; adventure!</strong><br><small style="color:#888">Confirm and get ready for the trip of a lifetime</small></div>
+                <div><strong style="color:var(--deep)">Approve &amp; adventure!</strong><br><small
+                    style="color:#888">Confirm and get ready for the trip of a lifetime</small></div>
               </div>
             </div>
             <div class="plan-img-grid">
@@ -1987,9 +2000,12 @@
             <div class="plan-box">
               <h4 style="margin-bottom:1.4rem;font-size:1.4rem;">Plan My Australian Adventure</h4>
               <div class="row g-3">
-                <div class="col-12"><label>Full Name</label><input type="text" class="form-control" placeholder="Your name"></div>
-                <div class="col-md-6"><label>Email Address</label><input type="email" class="form-control" placeholder="you@email.com"></div>
-                <div class="col-md-6"><label>Phone Number</label><input type="tel" class="form-control" placeholder="+61 ..."></div>
+                <div class="col-12"><label>Full Name</label><input type="text" class="form-control"
+                    placeholder="Your name"></div>
+                <div class="col-md-6"><label>Email Address</label><input type="email" class="form-control"
+                    placeholder="you@email.com"></div>
+                <div class="col-md-6"><label>Phone Number</label><input type="tel" class="form-control"
+                    placeholder="+61 ..."></div>
                 <div class="col-md-6"><label>Travel Style</label><select class="form-select">
                     <option>Solo Adventure</option>
                     <option>Group Tour</option>
@@ -2004,7 +2020,8 @@
                     <option>2+ Weeks</option>
                   </select></div>
                 <div class="col-md-6"><label>Departure Date</label><input type="date" class="form-control"></div>
-                <div class="col-md-6"><label>Number of Travellers</label><input type="number" class="form-control" placeholder="e.g. 2" min="1"></div>
+                <div class="col-md-6"><label>Number of Travellers</label><input type="number" class="form-control"
+                    placeholder="e.g. 2" min="1"></div>
                 <div class="col-md-6"><label>Budget (per person)</label><select class="form-select">
                     <option>Under $1,500</option>
                     <option>$1,500 – $3,000</option>
@@ -2018,8 +2035,10 @@
                     <option>Sports Events</option>
                     <option>Food &amp; Wine</option>
                   </select></div>
-                <div class="col-12"><label>Tell us about your dream trip</label><textarea class="form-control" rows="3" placeholder="Any specific places, activities, or special requests..."></textarea></div>
-                <div class="col-12"><button class="btn-oz" style="width:100%;padding:.95rem;font-size:.94rem;">🗺️ &nbsp;Send My Trip
+                <div class="col-12"><label>Tell us about your dream trip</label><textarea class="form-control" rows="3"
+                    placeholder="Any specific places, activities, or special requests..."></textarea></div>
+                <div class="col-12"><button class="btn-oz" style="width:100%;padding:.95rem;font-size:.94rem;">🗺️
+                    &nbsp;Send My Trip
                     Request</button></div>
               </div>
             </div>
@@ -2060,7 +2079,7 @@
           <div class="brand"><img src="Ozzietrip-Logo.png" alt="OzzieTrip" /></div>
           <p style="margin-top:.5rem;">Australia's trusted travel partner for curated tours, solo adventures, group
             escapes, and event experiences since 2012.</p>
-          
+
         </div>
         <!-- <div class="col-lg-2 col-md-3 col-6"><h6>Tours</h6><ul><li><a href="#">Group Tours</a></li><li><a href="#">Solo Travel</a></li><li><a href="#">Event Tours</a></li><li><a href="#">Custom Trips</a></li><li><a href="#">All Tours</a></li></ul></div>
       <div class="col-lg-2 col-md-3 col-6"><h6>Destinations</h6><ul><li><a href="#">Sydney</a></li><li><a href="#">Melbourne</a></li><li><a href="#">Gold Coast</a></li><li><a href="#">Outback</a></li><li><a href="#">Great Ocean Road</a></li></ul></div> -->
